@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Tracking System</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0 30px;
+            background-color: #FECD45;
+            
+        }
+        .box{
+            display: flex;
+            flex-wrap: wrap;
+            /* border: 2px solid black; */
+            
+        }
+        .info-box{
+            /* border: 2px solid red; */
+            margin: 20px;   
+        }
+        .image-box{
+            /* border: 2px solid green; */
+            margin: 20px;
+        }
+        img{
+            max-height: 300px;
+            width: 100%;
+            height: auto;
+        }
+        .btn{
+            width: 90%;
+            padding:5px;
+            display: block;
+            margin: auto;
+            margin-top: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        h2{
+            text-align: center;
+            margin: 20px;
+        }
+        p{
+            text-align: justify;
+            margin: 10px;
+            padding: 10px;
+        }
+        a{
+            text-decoration: none;
+            color: black;
+        }
+
+
+        @media only screen and (max-width: 869px) {
+            img{
+                width: 100%;
+            height: auto;
+            }
+            .box{
+            flex-direction: column-reverse;
+            }
+        }
+
+        @media only screen and (max-width: 1070px) {
+            .box{
+                align-items: center;
+                justify-content: center;
+                
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="info-box">
+            <h2>Vendor Tracking System</h2>
+            <p>Discover local vendors in your area with the ease !</p>
+            <p>Vendor Tracking helps you find the best Vegetable Stand ,Farmer's Stall</p>
+            <button class="btn"><a href="login.html">Find</a></button>
+
+        </div>
+        <div class="image-box">
+            <img src="image/imageBox.webp" alt="" srcset="">
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-time Location Sharing</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+crossorigin=""/>
+<style>
+
+*{
+  box-sizing: border-box
+  ;
+}
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #FECD45;
+  color: white;
+}
+    #map { height: 100vh; 
+        width: 100%; }
+
+.Headline{
+  text-align: center;
+  padding: 10px;
+  margin: 33px;
+}
+.send-div{
+  border: 2px solid black;
+  text-align: center;
+  width: 70%;
+  margin: auto;
+  max-width: 500px;
+  padding: 5px;
+  margin-bottom: 20px;
+  display: block;
+}
+.parent-div{
+  display: flex;
+  height: 50vh;
+  width: 100%;
+  /* border: 2px solid black; */
+  align-items: center;
+  justify-content: space-around;
+}
+#map{
+  /* border: 3px solid red; */
+  height: 100%;
+  width: 40%;
+  padding: 10px;
+  border-radius: 10px;
+  
+}
+#map1{
+  /* border: 3px solid red; */
+  height: 100%;
+  width: 40%;
+  border-radius: 10px;
+}
+
+.parentdiv{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  
+}
+.send-div:hover{
+  background-color: #333;
+  color: #ddd;
+  cursor: grab;
+}
+
+
+
+
+
+
+
+
+
+    /* #map { height: 100vh; 
+        width: 100%; } */
+</style>
+<body>
+
+  <div class="topnav">
+    <a class="active" href="index.html">Home</a>
+    <!-- <a href="#news">News</a> -->
+    <a href="contact.html
+    ">Contact</a>
+    <a href="about.html">About</a>
+  </div>
+<h1 class="Headline">Customer Side</h1>
+
+
+<button class="send-div" onclick="sendLocation()">Send location</button>
+
+<div class="parentdiv" >
+  <div class="childDiv">
+    <h4>Your Side Map</h4>
+  </div>
+  <div class="childDiv">
+    <h4>Vendor Side Map</h4>
+  </div>
+
+</div>
+
+<div class="parent-div">
+    <div id="map">
+    </div>
+    <div id="map1">
+    </div>
+
+</div>
+
+
+
+
+
+  
+  <div>
+    
+    <p id="status">Waiting for location data...</p>
+    <p id="otherLocation">Other client's location will appear here.</p>
+  </div>
+  <div id="map"></div>
+
+  <script>
+    const socket = io();
+
+    // Send location data to the server
+    function sendLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const locationData = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          };
+          document.getElementById('status').innerText = 
+            `Sent location: ${locationData.latitude}, ${locationData.longitude}`;
+            L.marker([locationData.latitude, locationData.longitude]).addTo(map)
+            .bindPopup('I am a receiver')
+            .openPopup();
+          
+          // Send location data to the server
+          socket.emit('locationUpdate', locationData);
+          
+        });
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    // Listen for location data from other clients
+    socket.on('locationUpdate', (data) => {
+      document.getElementById('otherLocation').innerText = 
+        `Other client's location: Latitude: ${data.latitude}, Longitude: ${data.longitude}`;
+        L.marker([data.latitude, data.longitude]).addTo(map1)
+            .bindPopup('Vendor Loaction')
+            .openPopup();
+    });
+  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+ <script src="receiver.js"></script>
+</body>
+</html>
